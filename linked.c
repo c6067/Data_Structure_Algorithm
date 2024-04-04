@@ -22,7 +22,7 @@ void print_linked(linked* node){
 
 linked* create_node(DataType n){		
 	linked* new_node = (linked*)malloc(sizeof(linked));
-	if(NULL == new_node){
+	if(NULL == new_node){        		     	  //judge pointer type variable wether NULL is C programmer's good habit!
 		printf("malloc fail!\n");
 		exit(-1);
 	}	
@@ -103,4 +103,38 @@ linked* linked_find(linked* node, DataType n){
 	
 	printf("no find.");
 	return NULL;
+}
+
+//position insert(before)
+void linked_insert(linked** node, linked* pos, DataType n){
+	if(NULL == pos){
+		printf("NULL ERROR\n");
+		return;
+	}	
+	
+	linked* new_node = create_node(n);	
+	linked* prev = *node;				//set previous node of seek
+	if(*node == pos){					//judge this node whether head		 
+		new_node->next = *node;			//push before
+		*node = new_node;		
+	}else{		
+		while(prev->next != pos){		//loop search previous	
+			prev = prev->next;
+		}
+		
+		prev->next = new_node;			//update pointer
+		new_node->next = pos;
+	}
+}
+
+//position insert(after;suit more for single linked list)
+void linked_insert_after(linked* pos, DataType n){
+	if(NULL == pos){
+		printf("NULL ERROR\n");
+		return;
+	}
+
+	linked* new_node = create_node(n);		
+	new_node->next = pos->next;			//alter pointer linked	
+	pos->next = new_node;	
 }
