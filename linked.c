@@ -8,10 +8,10 @@ typedef int DataType;
 
 typedef struct linked {
 	DataType data;	
-	struct linked* next;
+	struct linked *next;
 }linked;
 
-void print_linked(linked* node){
+void print_linked(linked *node){
 	while(node!=NULL){
 		printf("%d->",node->data);	
 		printf("%p :",node->next);	
@@ -20,9 +20,9 @@ void print_linked(linked* node){
 	printf("NULL\n");
 }
 
-linked* create_node(DataType n){		
-	linked* new_node = (linked*)malloc(sizeof(linked));
-	if(NULL == new_node){        		     	  //judge pointer type variable wether NULL is C programmer's good habit!
+linked *create_node(DataType n){		
+	linked *new_node = (linked*)malloc(sizeof(linked));
+	if(NULL == new_node){  			//judge pointer type variable wether NULL is C programmer's good habit!
 		printf("malloc fail!\n");
 		exit(-1);
 	}	
@@ -32,8 +32,8 @@ linked* create_node(DataType n){
 	return new_node;
 }
 
-void linked_push_back(linked** node, DataType n){
-	linked* new_node = create_node(n);
+void linked_push_back(linked **node, DataType n){
+	linked *new_node = create_node(n);
 	if(*node == NULL){		
 		*node = new_node;
 	}else{
@@ -46,15 +46,15 @@ void linked_push_back(linked** node, DataType n){
 	 }
 }
 
-void linked_push_front(linked** head, DataType n){
+void linked_push_front(linked **head, DataType n){
 	//first node must is head(transfer parameters mechanism)
 	//so new node's next pointer point to head, and move node
-	linked* new_node = create_node(n);		
+	linked *new_node = create_node(n);		
 	new_node->next = *head;	
 	*head = new_node;
 }
 
-void linked_pop_back(linked** node){
+void linked_pop_back(linked **node){
 	if(NULL == *node){
 		return;
 	}
@@ -66,8 +66,8 @@ void linked_pop_back(linked** node){
 		free(*node);
 		*node = NULL;
 	}else{
-		linked* prev = NULL;
-		linked* tail = *node;		
+		linked *prev = NULL;
+		linked *tail = *node;		
 		while(tail->next != NULL){			
 			prev = tail;
 			tail = tail->next;
@@ -80,17 +80,17 @@ void linked_pop_back(linked** node){
 	}
 }
 
-void linked_pop_front(linked** node){
+void linked_pop_front(linked **node){
 	if(NULL == *node){
 		return;
 	}
 	
-	linked* new_head = (*node)->next;	
+	linked *new_head = (*node)->next;	
 	free(*node);
 	*node = new_head;
 }
 
-linked* linked_find(linked* node, DataType n){
+linked *linked_find(linked *node, DataType n){
 	linked* current = node;
 	while(current){
 		if(current->data == n){
@@ -106,15 +106,15 @@ linked* linked_find(linked* node, DataType n){
 }
 
 //position insert(before)
-void linked_insert(linked** node, linked* pos, DataType n){
+void linked_insert(linked **node, linked *pos, DataType n){
 	if(NULL == pos){
 		printf("NULL ERROR\n");
 		return;
 	}	
 	
-	linked* new_node = create_node(n);	
-	linked* prev = *node;				//set previous node of seek
-	if(*node == pos){					//judge this node whether head		 
+	linked *new_node = create_node(n);	
+	linked *prev = *node;				//set previous node of seek
+	if(*node == pos){				//judge this node whether head		 
 		new_node->next = *node;			//push before
 		*node = new_node;		
 	}else{		
@@ -128,13 +128,64 @@ void linked_insert(linked** node, linked* pos, DataType n){
 }
 
 //position insert(after;suit more for single linked list)
-void linked_insert_after(linked* pos, DataType n){
+void linked_insert_after(linked *pos, DataType n){
 	if(NULL == pos){
 		printf("NULL ERROR\n");
 		return;
 	}
 
-	linked* new_node = create_node(n);		
+	linked *new_node = create_node(n);		
 	new_node->next = pos->next;			//alter pointer linked	
 	pos->next = new_node;	
 }
+
+//position delete(before)
+void linked_erase(linked **head, linked *pos){
+	if(pos == NULL){
+		printf("NULL ERROR\n");
+		return;
+	}
+
+	if(*head == pos){		
+		*head = pos->next;  			//head node move back
+		free(pos);
+		pos = NULL;
+		/*or call function:linked_pop_front(node);*/
+	}else{
+		linked *prev = *head;
+		while(prev->next != pos){	   	 //search backward
+			prev = prev->next;
+		}		
+		prev->next = pos->next;			//alter head and position's pointer
+		free(pos);
+		pos = NULL;
+	}
+}
+
+//position erase(after;suit single linked list)
+void linked_erase_after(linked *pos){
+	if(pos == NULL){
+		printf("NULL ERROR\n");
+		return;
+	}	
+	
+	linked *del = pos->next;	
+	pos->next = del->next;
+	free(del);
+	del = NULL;
+}
+
+//destory linked list
+void linked_destroy(linked **node){	
+	if(NULL == *node){
+		return;
+	}
+	
+	while(*node){		
+		free(*node);		
+		*node = (*node)->next;
+	}	
+	*node = NULL;
+}
+
+
