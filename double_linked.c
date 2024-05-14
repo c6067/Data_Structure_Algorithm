@@ -133,8 +133,8 @@ void dl_sentinel_insert(struct dlist *head, int value){
 
 	new_node->next = head->next;
 	if(head->next != NULL){
-		head->next->prev = new_node;	//because sentinel node is placeholder and boundary,
-	}									//its prev points to the last node.so,its next  
+		head->next->prev = new_node;		//because sentinel node is placeholder and boundary,
+	}						//its prev points to the last node.so,its next  
 	head->next = new_node;				//update need to update its prev
 	new_node->prev = head;
 }
@@ -143,7 +143,7 @@ void dl_sentinel_del(struct dlist *head){
 	head->prev->next = head->next;
 	if(head->next != NULL){
 		head->next->prev = head->prev;		//set current node pointer list's tail  
-	}										//but,CAUTION! double linked list is complex!
+	}						//but,CAUTION! double linked list is complex!
 	free(head);
 }
 
