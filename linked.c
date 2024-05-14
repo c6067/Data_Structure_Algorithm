@@ -175,6 +175,62 @@ void linked_erase_after(linked *pos){
 	del = NULL;
 }
 
+/*
+- add indirect pointer(pointer to a pointer) method optimize to insert node and erase node.
+- but need to Caution! this method not free memory of node!
+*/
+
+void insert_before_elegant(linked **node, linked *pos, DataType n) {
+    linked *new_node = create_node(n);
+    if (pos == NULL || *node == NULL) {
+        new_node->next = *node;
+        *node = new_node;
+    } else {
+        linked **pp = node;
+        while ((*pp)->next != pos && (*pp)->next != NULL) {
+            pp = &((*pp)->next);
+        }
+        if ((*pp)->next == NULL) {
+            printf("Position not found in linked list\n");
+            free(new_node);
+            return;
+        }
+        new_node->next = (*pp)->next;
+        (*pp)->next = new_node;
+    }
+}
+
+void insert_after_elegant(linked **node, linked *pos, DataType n) {
+    linked *new_node = create_node(n);
+    if (pos == NULL || *node == NULL) { 
+        new_node->next = *node;
+        *node = new_node;
+    } else {
+        linked **pp = node;
+        while (*pp != pos && *pp != NULL) {	//this a trick,you just compare node's different position
+            pp = &((*pp)->next);
+        }
+        if (*pp == NULL) {
+            printf("Position not found in linked list\n");
+            free(new_node);
+            return;
+        }
+        new_node->next = (*pp)->next;
+        (*pp)->next = new_node;
+    }
+}
+
+//erase node with indirect pointer
+void remove_node_elegant(linked *node, linked *del){
+	if(NULL == node)
+		return;
+	//del is a target of want to remove node
+	linked **pp = &node;	
+	while(*pp != del);
+		pp = &(*pp)->next;
+	*pp = del->next;	//so,there not free 'del' node's memory
+}
+
 //destory linked list
 void linked_destroy(linked **node){	
 	if(NULL == *node){
