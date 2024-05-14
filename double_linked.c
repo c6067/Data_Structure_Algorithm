@@ -50,7 +50,7 @@ void dl_push_back(struct dlist **head, int value){
 	}
 }
 
-int dl_pop_back(struct dlist** head){
+int dl_pop_back(struct dlist **head){
 	if(*head == NULL){
 		printf("list is empty.\n");
 		return -1;
