@@ -4,6 +4,11 @@
 */
 
 //implement priority queue with linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
 struct pqnode
 {
 	int data;
