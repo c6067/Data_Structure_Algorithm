@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define MAX 255
+
 struct pqnode
 {
 	int data;
